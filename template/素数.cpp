@@ -1,7 +1,7 @@
 //#include<cstring>
 //#define maxn 555555
-//int mark[maxn], prime[maxn], res;//prime�洢��������3��ʼ��mark[i]��ʾi����С������
-//void get_prime(int n) {//��������ɸ�����õ�n��������������res��
+//int mark[maxn], prime[maxn], res;
+//void get_prime(int n) {
 //	memset(mark, 0, sizeof(mark));
 //	res = 0;
 //	for (int i = 2; i <= n; i++) {
