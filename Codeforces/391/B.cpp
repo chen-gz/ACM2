@@ -1,157 +1,46 @@
-////Pollard_Rho算法分解大数,时间复杂度O(n^(1/4))
-////对n素因子分解,factor里存的是每个素因子及其幂指数
-////判断n是否为素数时如果n比较小就用打的表判断,否则就用Miller-Robin
-#include <iostream>
 #include <bits/stdc++.h>
-#include <vector>
-#include <algorithm>
-#include <map>
-#include <cstring>
-#include <cstdlib>
 using namespace std;
-#define maxn 200000
-typedef long long ll;
-bool is_prime[maxn];
-vector<int>prime;
-map<ll, int>factor;
-void get_prime()
-{
-	for (int i = 0; i<maxn; i++)
-		is_prime[i] = 1;
-	is_prime[0] = is_prime[1] = 0;
-	for (int i = 2; i<maxn; i++)
-		if (is_prime[i]) {
-			prime.push_back(i);
-			for (int j = i; j<maxn; j += i) is_prime[j] = 0;
+map<int,int> mp;
+#define maxn 555555
+int mark[maxn];
+vector<int> prime(maxn);
+int res;
+void get_prime(int n) {
+	memset(mark, 0, sizeof(mark));
+	res = 0;
+	for (int i = 2; i <= n; i++) {
+		if (!mark[i])
+			mark[i] = prime[res++] = i;
+		for (int j = 0; j < res && prime[j] * i <= n; j++) {
+			mark[i*prime[j]] = prime[j];
+			if (i%prime[j] == 0)
+				break;
 		}
-}
-ll gcd(ll a, ll b)
-{
-	if (b == 0) return a;
-	return gcd(b, a%b);
-}
-ll mod_mul(ll a, ll b, ll p)
-{
-	ll ans = 0ll;
-	a %= p, b %= p;
-	if (a>b) swap(a, b);
-	while (b)
-	{
-		if (b & 1) ans = (ans + a) % p;
-		a = (a + a) % p;
-		b >>= 1;
 	}
-	return ans;
 }
-ll mod_pow(ll a, ll b, ll p)
-{
-	ll ans = 1ll;
-	a %= p;
-	while (b)
-	{
-		if (b & 1) ans = mod_mul(ans, a, p);
-		a = mod_mul(a, a, p);
-		b >>= 1;
-	}
-	return ans;
-}
-int Times = 20;
-bool witness(ll a, ll n)
-{
-	ll m = n - 1;
-	int j = 0;
-	while ((m & 1) == 0)
-	{
-		j++;
-		m >>= 1;
-	}
-	ll x = mod_pow(a, m, n);
-	if (x == 1 || x == n - 1) return false;
-	while (j--)
-	{
-		x = mod_mul(x, x, n);
-		if (x == n - 1) return false;
-	}
-	return true;
-}
-bool Miller_Rabin(ll n)//判断n是否为素数
-{
-	srand(time(0));
-	if (n<2) return 0;
-	if (n == 2) return 1;
-	if ((n & 1) == 0) return 0;
-	for (int i = 0; i<Times; i++)
-	{
-		ll a = rand() % (n - 1) + 1;
-		if (witness(a, n)) return false;
-	}
-	return true;
-}
-ll Pollard_Rho(ll n, int c)
-{
-	ll x = 2, y = 2, d = 1;
-	while (d == 1)
-	{
-		x = mod_mul(x, x, n) + c;
-		y = mod_mul(y, y, n) + c;
-		y = mod_mul(y, y, n) + c;
-		d = gcd((x - y >= 0 ? x - y : y - x), n);
-	}
-	if (d == n) return Pollard_Rho(n, c + 1);
-	return d;
-}
-bool Is_Prime(ll n)
-{
-	if (n<maxn&&is_prime[n] || n >= maxn&&Miller_Rabin(n)) return 1;
-	return 0;
-}
-void Find_Factor(ll n)
-{
-	if (Is_Prime(n))
-	{
-		factor[n]++;
-		return;
-	}
-	for (int i = 0; i<prime.size() && prime[i] <= n; i++)
-		if (n%prime[i] == 0)
-		{
-			while (n%prime[i] == 0)
-			{
-				factor[prime[i]]++;
-				n /= prime[i];
+int main(int argc, char const *argv[]) {
+	//freopen("input.txt", "r", stdin);
+	get_prime(500001);
+	int n; cin>>n;
+	int s,ans  = 1;
+	sort(prime.begin(),prime.end());
+	for(int i=0; i<n; i++) {
+		cin>>s;
+		for(int j=2; j<=sqrt(s)+3; j++) {
+			if(prime[lower_bound(prime.begin(),prime.end(), s) - prime.begin()]==s) {
+				mp[s]++;
+				break;
+			}
+			if(s%j==0) {
+				mp[j]++; s/=j;
+				while(s%j==0)
+					s/=j;
 			}
 		}
-	if (n != 1)
-	{
-		if (Is_Prime(n))
-			factor[n]++;
-		else
-		{
-			ll p = Pollard_Rho(n, 1);
-			Find_Factor(p);
-			Find_Factor(n / p);
-		}
 	}
-}
-static int n;
-const int N = 1e5+1;
-vector<int> v[N];
-static int ans[N];
-int main(){
-	get_prime();
-	cin>>n;
-	while(n--) {
-		int tmp; cin>>tmp;
-		factor.clear();
-		Find_Factor(tmp);
-		for(auto i = factor.begin(); i!=factor.end(); i++) {
-			v[*i].push_back(tmp);
-			ans[*i]++;
-		}
+	for(auto i=mp.begin(); i!=mp.end(); i++) {
+		ans = max(ans,(*i).second);
 	}
-	sort(ans,ans+N,[](int a,int b){
-		return a>b
-	});
-	cout<<ans[0];
+	cout<<ans<<endl;
 	return 0;
 }
