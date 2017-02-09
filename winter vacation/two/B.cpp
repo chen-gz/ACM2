@@ -11,12 +11,10 @@ int main(int argc, char const *argv[])
 		std::pair<double,double> DE (E.first - D.first,E.second - D.second);
 		std::pair<double,double> DF (F.first - D.first,F.second - D.second);
 		double STriangle = 0.5 * fabs(DE.first * DF.second - DE.second * DF.first);
-
 		std::pair<double,double> AC (C.first - A.first,C.second - A.second);
 		std::pair<double,double> AB (B.first - A.first,B.second - A.second);
 		double Shhh = fabs(AC.first * AB.second - AC.second * AB.first);
 		double mul =  STriangle/Shhh;
-
 		// double k = AC.second / AC.first;
 		// double b = A.second - k * a.first;
 		std::pair<double, double> G(AC.first*mul + A.first, AC.second * mul + A.second);
