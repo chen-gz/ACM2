@@ -4,8 +4,6 @@
 #include <algorithm>
 #include <cmath>
 using namespace std;
-typedef long long ll;
-const int INF = 0x7f7f7f7f;
 const double eps = 1e-8;
 const int N = 1e4 + 10;
 typedef struct Point {
