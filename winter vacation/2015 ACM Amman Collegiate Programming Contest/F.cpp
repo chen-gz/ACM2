@@ -1,8 +1,10 @@
 /*
  * Kruskal算法求MST
  */
-const int MAXN=110;//最大点数
-const int MAXM=10000;//最大边数
+ #include <bits/stdc++.h>
+using namespace std;
+const int MAXN=110000;//最大点数
+const int MAXM=100100;//最大边数
 int F[MAXN];//并查集使用
 struct Edge {
 	int u,v,w;
@@ -34,7 +36,7 @@ int Kruskal(int n){
 		int t1=find(u);
 		int t2=find(v);
 		if(t1!=t2) {
-			ans+=w;
+			if(ans<w) ans =w;
 			F[t1]=t2;
 			cnt++;
 		}
@@ -44,4 +46,18 @@ int Kruskal(int n){
 		return -1; //不连通
 	else
 		return ans;
+}
+int main(){
+//	freopen("input.txt","r",stdin);
+	int T; cin>>T;
+	while(T--) {
+		int n,m; scanf("%d %d",&n,&m );
+		tol = 0;
+		for(int i=0; i<m; i++) {
+			int q,w,e;
+			scanf("%d %d %d",&q,&w,&e);
+			addedge(q,w,e);
+		}
+		printf("%d\n",Kruskal(n));
+	}
 }
