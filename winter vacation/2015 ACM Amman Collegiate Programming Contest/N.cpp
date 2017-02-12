@@ -99,7 +99,6 @@ int main() {
 	while(T--) {
 		edge_init();
 		tarjan_init();
-
 		scanf("%d%d", &n, &m);
 		find_init(n);
 
