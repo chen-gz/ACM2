@@ -1,5 +1,5 @@
 //http ://blog.csdn.net/acdreamers/article/details/8037918
-//直接调用Lucas函数;
+//直接调用Lucas函数;//板有错;
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
@@ -51,3 +51,24 @@ LL Lucas(LL n, LL m){
     return 0;
    }
  */
+
+//小组合数
+#define MAXN 205
+
+int num[MAXN + 1][MAXN + 1];
+
+void get_C(int n, int c)//求<=n的组合数，模c
+{
+    for(int i = 0; i <= n; i++)
+    {
+        num[i][i] = 1;
+        num[i][0] = 1;
+    }
+    for(int i = 2; i <= n; i++)
+    {
+        for(int j = 1; j < i; j++)
+        {
+            num[i][j] = (num[i - 1][j] + num[i - 1][j - 1]) % c;
+        }
+    }
+}

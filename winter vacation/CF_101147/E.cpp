@@ -1,16 +1,8 @@
-/*
- */
-//单源最短路径dijkstra算法，使用优先队列优化
-#include <iostream>
-#include <functional>
-#include <queue>
-#include <vector>
-#include <cstring>
+#include<bits/stdc++.h>
 using namespace std;
-const int MAX_V = 200000 + 1;//最大边的个数
+const int MAX_V = 200010 + 1;//最大边的个数
 #define INT_MAX 2147483647
-struct edge
-{
+struct edge {
 	int to, cost;
 	edge(int to, int cost) {
 		this->to = to;
@@ -20,10 +12,10 @@ struct edge
 typedef pair<int, int> P;
 //int V;//边的实际个数
 // 计数开始为0 所以若点 从1开始计算，则V需要+1；
-//int d[MAX_V];//最短距离
-//vector<edge> G[MAX_V]; //的格式；
-void init(){
-	for(int i=0; i<MAX_V; i++) {
+int d[MAX_V];//最短距离
+vector<edge> G[MAX_V]; //的格式；
+void init() {
+	for (int i = 0; i < MAX_V; i++) {
 		G[i].clear();
 	}
 }
@@ -51,4 +43,30 @@ void dijkstra(int start, vector<edge> G[], int V, int d[]) {
 			}
 		}
 	}
+}
+
+int main(int argc, char const *argv[]) {
+	freopen("jumping.in", "r", stdin);
+	int T; scanf("%d", &T);
+	while (T--) {
+		init();
+		int n; scanf("%d", &n);
+		for (int i = 0; i < n; i++) {
+			int tmp;
+			scanf("%d", &tmp);
+			if (i - tmp >= 0)
+				G[i - tmp].push_back(edge(i, 1));
+			if (i + tmp < n)
+				G[i + tmp].push_back(edge(i, 1));
+		}
+		dijkstra(n - 1, G, n, d);
+		for (int i = 0; i < n; i++) {
+			if (d[i] == INT_MAX)
+				printf("-1\n");
+			else
+				printf("%d\n", d[i]);
+		}
+	}
+
+	return 0;
 }
