@@ -14,8 +14,8 @@ bool cmp(node a, node b) {
 	return a.score > b.score;
 }
 int main() {
-	FILE *fr = freopen("/home/wendell/Program/in", "r", stdin),
-	      *fo = freopen("/home/wendell/Program/out", "w", stdout);
+	// FILE *fr = freopen("/home/wendell/Program/in", "r", stdin),
+	//       *fo = freopen("/home/wendell/Program/out", "w", stdout);
 	std::ios::sync_with_stdio(false);
 	int n; cin >> n;
 	string str;
