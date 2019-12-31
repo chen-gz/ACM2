@@ -1,0 +1,5 @@
+/.clang-format
+/cmake.sh
+/compile_commands.json
+/Makefile
+/cmake-build-debug/

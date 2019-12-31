@@ -1,17 +1,18 @@
 //普通快速幂
 #include <vector>
 #include <cassert>
-typedef long long ll;
-ll mod_pow(ll x, ll n, ll mod) {
-	ll ans = 1;//返回的值,x的n次方
-	while (n) {
-		if (n & 1)
-			ans = (ans * x) % mod; // 奇数位
-		x = x * x % mod; // 每位都平方
-		n >>= 1; // 右移
-	}
-	return ans;
-}
+
+template<typename T>
+T mod_pow(T base, T exponent, T module) {
+    T ans = 1;
+    while (exponent) {
+        if (exponent & 1)
+            ans = (ans * base) % module;
+        base = base * base % module;
+        exponent >>= 1;
+    }
+    return ans;
+};
 //矩阵快速幂
 //要取模自己写
 const int MatSize = 100;
